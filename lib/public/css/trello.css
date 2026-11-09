@@ -1,0 +1,70 @@
+/* Card-specific content; the shared workbench shell owns window geometry. */
+#trello-panel { min-height: 0; display: flex; flex-direction: column; background: var(--bg); color: var(--text); overflow: hidden; }
+#trello-panel.hidden { display: none; }
+#trello-panel .trello-title { display: inline-flex; align-items: center; gap: 7px; font-weight: 700; flex: 1; }
+
+#trello-panel .trello-window-actions { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; }
+#trello-panel button { font: inherit; color: var(--text-secondary); background: var(--bg-alt); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+#trello-panel button:hover { background: var(--bg-hover, rgba(128,128,128,.12)); color: var(--text); }
+#trello-panel button:disabled { opacity: .5; cursor: default; }
+#trello-panel :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.trello-notice { margin: 0; padding: 0 16px; color: var(--text-muted); font-size: 12px; }
+.trello-notice:not(:empty) { padding: 8px 16px; }
+.trello-content { overflow: auto; min-height: 0; flex: 1; }
+.trello-empty { max-width: 420px; margin: 0 auto; padding: 48px 28px; text-align: center; color: var(--text-muted); font-size: 13px; line-height: 1.6; }
+.trello-empty strong { display: block; margin-bottom: 6px; color: var(--text); font-size: 14px; }
+.trello-empty p { margin: 0; }
+#trello-panel a { color: var(--link); }
+#trello-panel .issue-row { width: 100%; text-align: left; }
+#trello-panel .issue-doc-body, #trello-panel .issue-doc-body .md-content { overflow-wrap: anywhere; }
+#trello-panel .issue-doc-body .md-content { font-size: 14px; line-height: 1.7; }
+#trello-panel .issue-discussion .md-content { font-size: 13px; line-height: 1.6; }
+#trello-panel .md-content > :first-child { margin-top: 0; }
+#trello-panel .md-content > :last-child { margin-bottom: 0; }
+#trello-panel .md-content h1, #trello-panel .md-content h2, #trello-panel .md-content h3 { margin: 1.3em 0 .5em; font-family: var(--font-display); }
+#trello-panel .md-content :is(ul, ol) { padding-left: 1.4em; }
+#trello-panel .md-content li > :is(ul, ol) { margin-top: 4px; }
+#trello-panel .md-content li.task-list-item { list-style: none; margin-left: -1.4em; }
+#trello-panel .md-content pre { overflow-x: auto; max-width: 100%; }
+#trello-panel .md-content table { display: block; max-width: 100%; overflow-x: auto; }
+#trello-panel .md-content img { max-width: 100%; }
+@media (max-width: 767px) { #trello-panel .issue-detail { padding: 20px 16px 40px; } }
+.trello-work-state { color: var(--text-secondary); }
+#header-github-links:has(.session-trello-link) { max-width: min(440px, 40vw); }
+#header-github-links:has(.session-trello-link) > .session-github-links { display: flex; }
+@media (max-width: 767px) {
+  #header-github-links:has(.session-trello-link) { max-width: 170px; }
+  #header-github-links .trello-work-title, #header-github-links .trello-work-state { display: none; }
+}
+.trello-work-brand { display: inline-flex; align-items: center; flex: none; color: inherit; }
+.trello-work-brand svg { width: 13px; height: 13px; }
+
+#trello-panel .trello-title .trello-work-brand svg { width: 14px; height: 14px; }
+#trello-panel a.trello-icon-btn { color: var(--text-secondary); text-decoration: none; border: 1px solid var(--border); background: var(--bg-alt); box-sizing: border-box; }
+#trello-panel a.trello-icon-btn:hover { background: var(--bg-hover, rgba(128,128,128,.12)); color: var(--text); }
+#trello-panel [data-trello-external][hidden] { display: none; }
+#trello-panel .trello-conversations { margin: 22px 0 26px; }
+#trello-panel .trello-conversations h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin: 0 0 10px; }
+#trello-panel .trello-sharing-hint { font-size: 11px; line-height: 1.5; color: var(--text-muted); margin: 10px 0 0; }
+@media (max-width: 1023px) { #trello-panel a.trello-icon-btn { height: 36px; } }
+
+/* Compact metadata sits with the title, without the document-style divider. */
+#trello-panel .trello-card-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; font-size: 12px; line-height: 1.4; }
+#trello-panel .trello-card-id { padding: 4px 7px; border-radius: 5px; background: var(--bg-alt); color: var(--text-secondary); font-family: var(--font-mono); font-weight: 500; letter-spacing: .015em; overflow-wrap: anywhere; }
+#trello-panel .trello-card-status { padding: 3px 8px; border: 1px solid var(--border); border-radius: 999px; color: var(--text-secondary); overflow-wrap: anywhere; }
+#trello-panel .trello-card-board { padding: 3px 8px; color: var(--text-muted); overflow-wrap: anywhere; }
+
+#trello-panel .trello-title { min-width: 0; gap: 7px; height: auto; font-size: 11px; line-height: 20px; font-weight: 600; }
+#trello-panel .trello-window-actions { flex-shrink: 0; }
+#trello-panel .trello-header-card { display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; height: 24px; box-sizing: border-box; padding: 0 5px; border-radius: 5px; color: var(--text-secondary); text-decoration: none; font: inherit; }
+#trello-panel .trello-header-card .lucide { display: block; width: 12px; height: 12px; color: inherit; }
+#trello-panel .trello-header-card:hover { color: var(--text); background: var(--bg-alt); }
+#trello-panel .trello-window-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; line-height: 20px; font-weight: 500; }
+
+#trello-panel .trello-comment > header { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 5px; }
+#trello-panel .trello-comment > header strong { font-weight: 600; }
+#trello-panel .trello-comment .issue-doc-body { margin: 0; }
+
+#trello-panel .trello-title > .trello-work-brand { height: 20px; align-items: center; }
+#trello-panel .trello-title > .trello-work-brand svg { display: block; }
+#trello-panel [data-trello-window-id] { display: block; line-height: 20px; }

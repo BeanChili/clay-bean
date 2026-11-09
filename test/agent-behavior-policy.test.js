@@ -295,6 +295,21 @@ test("GitHub and Linear links are independent; Linear read tools stay when Linea
   assert.doesNotMatch(request.notice(DRIVER), /GitHub/);
 });
 
+test("GitHub and Trello links are independent; Trello read tools stay when Trello links are Off", async function () {
+  var all = function () { return [tool("link_session_github"), tool("get_session_github"), tool("link_session_trello"), tool("unlink_session_trello"), tool("read_trello_card"), tool("search_trello_cards")]; };
+  var trelloOff = gateFor({ value: { trelloLinks: "off" } }).filterTools(DRIVER, all());
+  assert.deepEqual(trelloOff.map(function (d) { return d.name; }), ["link_session_github", "get_session_github", "read_trello_card", "search_trello_cards"]);
+  assert.match(trelloOff[2].description, /Trello session links is Off/);
+  assert.equal(trelloOff[0].description, "Original link_session_github.", "GitHub is untouched by the Trello setting");
+  assert.equal((await trelloOff[2].handler({})).isError, undefined);
+  var githubOff = gateFor({ value: { githubLinks: "off" } }).filterTools(DRIVER, all());
+  assert.deepEqual(githubOff.map(function (d) { return d.name; }), ["link_session_trello", "unlink_session_trello", "read_trello_card", "search_trello_cards"]);
+  var request = gateFor({ value: { trelloLinks: "request" } });
+  assert.match(request.filterTools(DRIVER, all())[2].description, /Trello session links is On request/);
+  assert.match(request.notice(DRIVER), /linking this session to Trello cards/);
+  assert.doesNotMatch(request.notice(DRIVER), /GitHub/);
+});
+
 test("the learning setting adds its own prefix to log writes without removing the tools", function () {
   var gate = gateFor({ value: { logsLearning: "off" } });
   var defs = gate.filterTools(DRIVER, [tool("create_log"), tool("update_log"), tool("read_log")]);
