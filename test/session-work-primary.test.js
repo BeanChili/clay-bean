@@ -6,15 +6,16 @@ function world() {
     { url: 'https://github.com/a/b/pull/1', kind: 'pr', number: 1 },
     { url: 'https://github.com/a/b/pull/2', kind: 'pr', number: 2 },
     { url: 'https://github.com/a/b/issues/1', kind: 'issue', number: 1 },
-  ], linearLinks: [{ provider: 'linear', url: 'https://linear.app/a/issue/A-1', identifier: 'A-1' }] };
+  ], linearLinks: [{ provider: 'linear', url: 'https://linear.app/a/issue/A-1', identifier: 'A-1' }],
+  trelloLinks: [{ provider: 'trello', url: 'https://trello.com/c/abc12345', identifier: 'abc12345' }] };
   var ctx = { sm: { sessions: new Map([[1, session]]), saveSessionFile: function () { return true; }, broadcastSessionList: function () {} },
     canAccess: function () { return true; }, canRefresh: function (ws, item) { return ws.owner === item.ownerId; }, sendTo: function (ws, result) { ws.result = result; } };
   return { ctx: ctx, session: session };
 }
 test('primary choices are independent, require linked items and roll back failed saves', function () {
   var w = world(), s = w.session;
-  [s.githubLinks[0], s.githubLinks[2], s.linearLinks[0]].forEach(function (link) { primary.setPrimary(w.ctx.sm, s, link.url); });
-  assert.deepEqual(s.workPrimary, { pr: s.githubLinks[0].url, issue: s.githubLinks[2].url, linear: s.linearLinks[0].url });
+  [s.githubLinks[0], s.githubLinks[2], s.linearLinks[0], s.trelloLinks[0]].forEach(function (link) { primary.setPrimary(w.ctx.sm, s, link.url); });
+  assert.deepEqual(s.workPrimary, { pr: s.githubLinks[0].url, issue: s.githubLinks[2].url, linear: s.linearLinks[0].url, trello: s.trelloLinks[0].url });
   assert.throws(function () { primary.setPrimary(w.ctx.sm, s, 'https://github.com/a/b/issues/999'); }, /already linked/);
   w.ctx.sm.saveSessionFile = function () { return false; };
   assert.throws(function () { primary.setPrimary(w.ctx.sm, s, s.githubLinks[1].url); }, /Could not save/);
@@ -59,7 +60,7 @@ test('saved primaries outrank later links for all three badge types and popover 
   assert.match(visible, /href="https:\/\/github.com\/a\/b\/pull\/1"/);
   assert.doesNotMatch(visible, /href="https:\/\/github.com\/a\/b\/pull\/2"/);
   assert.match(visible, /A-1/); assert.match(visible, /issues\/1/);
-  html = popup.primaryWorkPopover(s.githubLinks.concat(s.linearLinks), s.workPrimary, 1, ui.githubWorkMarkup);
-  assert.match(html, /Linear issues/); assert.match(html, /Pull requests/); assert.match(html, /GitHub issues/);
+  html = popup.primaryWorkPopover(s.githubLinks.concat(s.linearLinks).concat(s.trelloLinks), s.workPrimary, 1, ui.githubWorkMarkup);
+  assert.match(html, /Linear issues/); assert.match(html, /Trello cards/); assert.match(html, /Pull requests/); assert.match(html, /GitHub issues/);
   assert.match(html, /aria-pressed="true" disabled><svg/);
 });

@@ -255,3 +255,53 @@
 }
 .work-primary-row .linear-work-id, .work-primary-row .linear-work-state { flex: none; white-space: nowrap; }
 .work-primary-row .linear-work-state { max-width: 62px; overflow: hidden; text-overflow: ellipsis; }
+
+/* Trello mirrors the Linear chip rules above with its own class names. */
+.session-row-github-links .session-trello-link {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+.session-row-github-links:has(.github-kind-pr, .github-kind-issue) .session-trello-link { max-width: calc(100% - 76px); }
+.trello-work-state-compact { display: none; }
+.session-row-github-links .trello-work-id {
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: 76%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.session-row-github-links .trello-work-state {
+  display: block;
+  flex: 1 4 0;
+  min-width: 0;
+  max-width: 52px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.session-row-github-links .trello-work-state-full { display: none; }
+.session-row-github-links .trello-work-state-compact {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.session-row-github-links .trello-work-title {
+  flex: 1 5 0;
+  min-width: 0;
+  max-width: 34px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.session-row-github-links .trello-work-title:empty { display: none; }
+.session-row-github-links .trello-work-brand svg { width: 11px; height: 11px; }
+.session-row-github-links .trello-work-brand { flex: none; padding-right: 0; border-right: 0; }
+.session-row-github-links .session-trello-link { touch-action: manipulation; }
+.work-primary-row .session-trello-link { min-width: 0; max-width: 100%; box-sizing: border-box; }
+.work-primary-row .trello-work-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.work-primary-row .trello-work-id, .work-primary-row .trello-work-state { flex: none; white-space: nowrap; }
+.work-primary-row .trello-work-state { max-width: 62px; overflow: hidden; text-overflow: ellipsis; }
