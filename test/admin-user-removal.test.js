@@ -14,6 +14,17 @@ test("user removal uses the custom destructive confirmation dialog", function ()
   assert.match(source, /removeUser\(userId, body\)/);
 });
 
+test("admin credential help sends a recovery email and never promises a temporary PIN", function () {
+  assert.doesNotMatch(source, /showConfirmResetPin/);
+  assert.doesNotMatch(source, /A new temporary PIN will be generated/);
+  assert.match(source, /function showConfirmRecoveryEmail\(name, maskedEmail, onConfirm\)/);
+  assert.match(source, /Email a recovery link to/);
+  assert.match(source, /api\/admin\/users\/" \+ userId \+ "\/recovery-email/);
+  // Outcomes and failures stay on screen instead of only flashing as a toast.
+  assert.match(source, /showAdminNotice\("Recovery email sent"/);
+  assert.match(source, /showAdminNotice\("Recovery email not sent"/);
+});
+
 test("invite revocation keeps its explicit custom-dialog action", function () {
   assert.match(source, /showConfirmDialog\("Revoke this invite\? The link will no longer work\.", "Revoke", function \(\) \{/);
 });

@@ -37,7 +37,10 @@ function isolated(t) {
   var users = load('users');
   var pages = {};
   ['pinPageHtml', 'adminSetupPageHtml', 'multiUserLoginPageHtml', 'smtpLoginPageHtml'].forEach(function (key) { pages[key] = function () { return ''; }; });
-  function server() { return load('server-auth').attachAuth({ users: users, smtp: { isEmailLoginEnabled: function () { return false; } }, pages: pages }); }
+  var smtp = { isEmailLoginEnabled: function () { return false; }, isSmtpConfigured: function () { return false; } };
+  function server(overrides) {
+    return load('server-auth').attachAuth(Object.assign({ users: users, smtp: smtp, pages: pages }, overrides || {}));
+  }
   return { root: root, users: users, load: load, server: server, config: config, state: state };
 }
 

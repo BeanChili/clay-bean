@@ -187,6 +187,19 @@ test("administrator receives only metadata and cannot fetch project content or s
     method: "POST", headers: { Cookie: "relay_auth_user=" + fixture.tokens.admin },
   });
   assert.equal(reset.status, 403);
+  // Credential recovery replaces it for other accounts, and an administrator
+  // cannot send a link while SMTP is unconfigured.
+  var recovery = await fetch("http://127.0.0.1:" + fixture.port + "/api/admin/users/owner/recovery-email", {
+    method: "POST", headers: { Cookie: "relay_auth_user=" + fixture.tokens.admin, "Content-Type": "application/json" },
+  });
+  assert.equal(recovery.status, 400);
+  var recoveryBody = await recovery.text();
+  assert.match(recoveryBody, /SMTP is not configured/);
+  assert.doesNotMatch(recoveryBody, /token|tempPin|password/i);
+  var foreignRecovery = await fetch("http://127.0.0.1:" + fixture.port + "/api/admin/users/owner/recovery-email", {
+    method: "POST", headers: { Cookie: "relay_auth_user=" + fixture.tokens.member, "Content-Type": "application/json" },
+  });
+  assert.equal(foreignRecovery.status, 403);
   var deletion = await fetch("http://127.0.0.1:" + fixture.port + "/api/admin/users/owner", {
     method: "DELETE", headers: { Cookie: "relay_auth_user=" + fixture.tokens.admin },
   });
