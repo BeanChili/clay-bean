@@ -574,7 +574,7 @@ test('admin editors and the avatar crop are inline subviews; destructive confirm
   await page.locator('#settings-confirm [data-confirm]').click();
   assert.equal(await page.locator('.admin-subview').count(), 0);
   // Destructive actions remain overlay confirmations.
-  await page.locator('#admin-users-body .admin-remove-btn:not(.admin-recovery-btn):not(.admin-perms-btn)').first().click();
+  await page.locator('#admin-users-body .admin-remove-btn:not(.admin-recovery-btn):not(.admin-perms-btn):not(.admin-email-btn)').first().click();
   await page.locator('.admin-modal-overlay .admin-modal-confirm-danger').waitFor();
   assert.equal(await page.locator('.admin-modal-overlay .admin-modal').getAttribute('role'), 'dialog');
   await page.locator('.admin-modal-overlay .admin-modal-cancel').click();
